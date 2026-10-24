@@ -1,0 +1,11 @@
+:root {
+    --red: #DE302D;
+    --darkRed: #8C2020;
+    --black: #0D0D0D;
+    --lightBrowm: #D98943;
+    --darkBrowm: #BF571B;
+}
+
+.fsz12{
+    size: 12px;
+}
