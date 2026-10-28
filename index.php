@@ -1,3 +1,20 @@
+<?php
+require_once "conexao.php";
+
+$sql = "SELECT id, nome, descricao, preco, imagem
+        FROM pizzas
+        WHERE ativo = 1
+        ORDER BY id DESC";
+
+$resultado = mysqli_query($conexao, $sql);
+
+if (!$resultado) {
+    die("Erro ao carregar as pizzas: " . mysqli_error($conexao));
+}
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+
 <!DOCTYPE html>
 <html lang="pr-br">
 
@@ -67,29 +84,61 @@
 
                                     <div class="mb-md-5 mt-md-4 pb-5">
 
-                                        <h2 class="fw-bold mb-2 text-uppercase">Administração</h2>
-                                        <p class="text-white-50 mb-5">Por favor, entre com seu usuário e senha!</p>
 
-                                        <div data-mdb-input-init class="form-outline form-white mb-4">
-                                            <input type="text" id="typeEmailX" class="form-control form-control-lg" />
-                                            <label class="form-label" for="typeEmailX">Usuario</label>
-                                        </div>
+                                        <form action="login.php" method="POST">
 
-                                        <div data-mdb-input-init class="form-outline form-white mb-4">
-                                            <input type="password" id="typePasswordX"
-                                                class="form-control form-control-lg" />
-                                            <label class="form-label" for="typePasswordX">Senha</label>
-                                        </div>
+                                            <div class="mb-md-5 mt-md-4 pb-5">
 
-                                        <button data-mdb-button-init data-mdb-ripple-init
-                                            class="btn btn-outline-light btn-lg px-5" type="submit">Entrar</button>
+                                                <h2 class="fw-bold mb-2 text-uppercase">
+                                                    Administração
+                                                </h2>
 
-                                        <div class="d-flex justify-content-center text-center mt-4 pt-1">
-                                            <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
-                                            <a href="#!" class="text-white"><i
-                                                    class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
-                                            <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
-                                        </div>
+                                                <p class="text-white-50 mb-5">
+                                                    Por favor, entre com seu usuário e senha!
+                                                </p>
+
+                                                <div data-mdb-input-init class="form-outline form-white mb-4">
+
+                                                    <input
+                                                        type="text"
+                                                        id="usuario"
+                                                        name="usuario"
+                                                        class="form-control form-control-lg"
+                                                        required
+                                                        autocomplete="username" />
+
+                                                    <label class="form-label" for="usuario">
+                                                        Usuário
+                                                    </label>
+
+                                                </div>
+
+                                                <div data-mdb-input-init class="form-outline form-white mb-4">
+
+                                                    <input
+                                                        type="password"
+                                                        id="senha"
+                                                        name="senha"
+                                                        class="form-control form-control-lg"
+                                                        required
+                                                        autocomplete="current-password" />
+
+                                                    <label class="form-label" for="senha">
+                                                        Senha
+                                                    </label>
+
+                                                </div>
+
+                                                <button
+                                                    class="btn btn-outline-light btn-lg px-5"
+                                                    type="submit">
+                                                    Entrar
+                                                </button>
+
+                                            </div>
+
+                                        </form>
+
 
                                     </div>
 
@@ -146,35 +195,65 @@
     </section>
 
     <!-- Cardápio -->
+
+    <!-- Cardápio -->
     <section class="cardapio">
         <div class="text-center pt-10">
-            <h2>Nossas Pizzas em Destaque</h1>
-                <p>Escolha as suas favoritas e aproveite o melhor da nossa culinária!</h3>
+            <h2>Nossas Pizzas em Destaque</h2>
+            <p>Escolha as suas favoritas e aproveite o melhor da nossa culinária!</p>
         </div>
+
         <div class="d-flex flex-row justify-content-center gap-3 flex-wrap pt-10">
 
-            <!-- Pizza 1 -->
-            <div class="card" style="width: 18rem;">
-                <img src="assets/pizzaGenerica.jpg" class="card-img-top fotoPizza" alt="Pizza">
+            <?php while ($pizza = mysqli_fetch_assoc($resultado)): ?>
 
-                <div class="card-body">
-                    <h5 class="card-title">Pizza Calabresa</h5>
-                    <p class="card-text">Uma deliciosa pizza de calabresa.</p>
-                    <button href="#" class="btn btn-primary" data-id="1" data-nome="Pizza de Calabresa"
-                        data-preco="39.90" data-imagem="assets/pizzaGenerica.jpg"
-                        onclick="adicionarCarrinho(1, 'Pizza de Calabresa', 39.90)">
-                        Adicionar ao carrinho
-                    </button>
+                <div class="card" style="width: 18rem;">
+
+                    <img
+                        src="<?= htmlspecialchars($pizza['imagem'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                        class="card-img-top fotoPizza"
+                        alt="<?= htmlspecialchars($pizza['nome'], ENT_QUOTES, 'UTF-8') ?>">
+
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <?= htmlspecialchars($pizza['nome'], ENT_QUOTES, 'UTF-8') ?>
+                        </h5>
+
+                        <p class="card-text">
+                            <?= htmlspecialchars($pizza['descricao'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                        </p>
+
+                        <p class="fw-bold">
+                            R$ <?= number_format((float) $pizza['preco'], 2, ',', '.') ?>
+                        </p>
+
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            onclick="adicionarCarrinho(
+                            <?= (int) $pizza['id'] ?>,
+                            <?= htmlspecialchars(json_encode($pizza['nome'], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>,
+                            <?= (float) $pizza['preco'] ?>
+                        )">
+                            Adicionar ao carrinho
+                        </button>
+                    </div>
+
                 </div>
-            </div>
+
+            <?php endwhile; ?>
+
         </div>
     </section>
+
+    <?php mysqli_free_result($resultado); ?>
+
 
 
 
     <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous">
-        </script>
+    </script>
 
     <script src="carrinho.js"></script>
 </body>
