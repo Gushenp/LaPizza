@@ -70,6 +70,7 @@ if (!$resultado) {
 
     </nav>
 
+    <!-- Modal do ADM -->
     <dialog class="dialog" id="exampleDialog">
         <div class="dialog-header">
         </div>
@@ -154,7 +155,6 @@ if (!$resultado) {
             <button type="button" class="btn-solid theme-secondary" data-bs-dismiss="dialog">Close</button>
         </div>
     </dialog>
-    <!-- Corpo da págnia -->
 
     <!-- Secção de apresentação -->
     <section class="position-relative banner-bg">
@@ -193,8 +193,6 @@ if (!$resultado) {
         </div>
 
     </section>
-
-    <!-- Cardápio -->
 
     <!-- Cardápio -->
     <section class="cardapio">
@@ -243,6 +241,30 @@ if (!$resultado) {
 
             <?php endwhile; ?>
 
+        </div>
+    </section>
+
+    <!-- Sobre a pizzaria -->
+    <section class="sobrePizzaria pt-10">
+        <h1>Sobre a Bella Pizza</h1>
+        <p>Somos uma pizzaria familiar, apaixonada por pizzas e por bons momentos. Nosso objetivo é levar até você o melhor da culinária italiana, com receitas tradicionais e ingredientes selecionados.</p>
+        <div>
+            <div>
+                <h1>ICONE</h1>
+                <p>Descrição</p>
+            </div>
+            <div>
+                <h1>ICONE</h1>
+                <p>Descrição</p>
+            </div>
+            <div>
+                <h1>ICONE</h1>
+                <p>Descrição</p>
+            </div>
+        </div>
+        <div>
+            <h2>Mais que uma pizza,</h2>
+            <h1>uma experiência</h1>
         </div>
     </section>
 

@@ -5,14 +5,15 @@
     --darkBlack: #000000;
     --lightBrowm: #D98943;
     --darkBrowm: #BF571B;
+    --white: #ffff;
 }
 
 /* Configurações do banner */
-.fsz12{
+.fsz12 {
     size: 12px;
 }
 
-.banner-bg{
+.banner-bg {
     background-color: var(--darkBlack);
 }
 
@@ -27,23 +28,106 @@
     display: block;
 }
 
-.bannerText > p{
+.bannerText>p {
     font-size: clamp(15px, 1.2vw, 20px);
     text-align: justify
 }
 
-.bannerText > div > h1,
-.bannerText > div > h2 {
+.bannerText>div>h1,
+.bannerText>div>h2 {
     font-size: clamp(40px, 1.2vw, 60px);
     text-align: center
 }
 
-.cardapio{
-    color: #000000;
-    background-color: aliceblue;
+.cardapio {
+    color: var(--white);
 }
 
-.fotoPizza{
+.fotoPizza {
     width: auto;
     height: 250px;
+}
+
+.sobrePizzaria {
+    background-color: var(--black);
+}
+
+.imgSobrePizzaria {
+    opacity: 0.5;
+}
+
+.cardSobre {
+    width: auto;
+    border-radius: 10px;
+    background-color: var(--red);
+}
+
+.fontRed{
+    color: var(--red);
+}
+
+.TitlesMTB-20px {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.tagSize {
+    width: min-content;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+.tagSize {
+    width: fit-content;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.footer {
+    background-color: #202124;
+}
+
+.footer h5 {
+    font-size: 16px;
+}
+
+.footer p {
+    color: #d0d0d0;
+}
+
+.footer-link {
+    display: block;
+    color: #d0d0d0;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.footer-link:hover {
+    color: white;
+}
+
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    opacity: 0.7;
+}
+
+.footer-line {
+    border-color: #444;
+    margin-top: 30px;
+    margin-bottom: 15px;
 }
