@@ -90,4 +90,6 @@ echo "<p>Total: R$ " .
 
 mysqli_close($conexao);
 
+header("Location: index.php");
+exit;
 ?>

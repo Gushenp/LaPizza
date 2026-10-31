@@ -24,7 +24,7 @@ if (!$resultado) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
     <title>LaPizza</title>
 </head>
 
@@ -32,17 +32,17 @@ if (!$resultado) {
     <!-- Barra de navegação -->
     <nav class="navbar sm:navbar-expand bg-1 fg-2">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="index.php">
                 <img src="assets/NavLogo.png" alt="Logo" width="90" class="d-inline-block align-text-top">
             </a>
 
             <!-- Menu para navegação -->
             <div class="drawer-body">
                 <div class="nav nav-pills navbar-nav  d-flex justify-content-center">
-                    <a class="nav-link" aria-current="page" href="#">Início</a>
-                    <a class="nav-link" href="#">Cardápio</a>
-                    <a class="nav-link" href="#">Sobre</a>
-                    <a class="nav-link" href="#">Contato</a>
+                    <a class="nav-link" aria-current="page" href="index.php">Início</a>
+                    <a class="nav-link" href="#cardapio">Cardápio</a>
+                    <a class="nav-link" href="#sobre">Sobre</a>
+                    <a class="nav-link" href="#contato">Contato</a>
                 </div>
             </div>
 
@@ -100,12 +100,8 @@ if (!$resultado) {
 
                                                 <div data-mdb-input-init class="form-outline form-white mb-4">
 
-                                                    <input
-                                                        type="text"
-                                                        id="usuario"
-                                                        name="usuario"
-                                                        class="form-control form-control-lg"
-                                                        required
+                                                    <input type="text" id="usuario" name="usuario"
+                                                        class="form-control form-control-lg" required
                                                         autocomplete="username" />
 
                                                     <label class="form-label" for="usuario">
@@ -116,12 +112,8 @@ if (!$resultado) {
 
                                                 <div data-mdb-input-init class="form-outline form-white mb-4">
 
-                                                    <input
-                                                        type="password"
-                                                        id="senha"
-                                                        name="senha"
-                                                        class="form-control form-control-lg"
-                                                        required
+                                                    <input type="password" id="senha" name="senha"
+                                                        class="form-control form-control-lg" required
                                                         autocomplete="current-password" />
 
                                                     <label class="form-label" for="senha">
@@ -130,9 +122,7 @@ if (!$resultado) {
 
                                                 </div>
 
-                                                <button
-                                                    class="btn btn-outline-light btn-lg px-5"
-                                                    type="submit">
+                                                <button class="btn btn-outline-light btn-lg px-5" type="submit">
                                                     Entrar
                                                 </button>
 
@@ -157,7 +147,7 @@ if (!$resultado) {
     </dialog>
 
     <!-- Secção de apresentação -->
-    <section class="position-relative banner-bg">
+    <section class="position-relative banner-bg" id="inicio">
 
         <div class="banner position-relative mx-auto ">
             <!-- Foto do banner -->
@@ -195,7 +185,7 @@ if (!$resultado) {
     </section>
 
     <!-- Cardápio -->
-    <section class="cardapio">
+    <section class="cardapio" id="cardapio">
         <div class="text-center pt-10">
             <h2>Nossas Pizzas em Destaque</h2>
             <p>Escolha as suas favoritas e aproveite o melhor da nossa culinária!</p>
@@ -205,39 +195,32 @@ if (!$resultado) {
 
             <?php while ($pizza = mysqli_fetch_assoc($resultado)): ?>
 
-                <div class="card" style="width: 18rem;">
+            <div class="card" style="width: 18rem;">
 
-                    <img
-                        src="<?= htmlspecialchars($pizza['imagem'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
-                        class="card-img-top fotoPizza"
-                        alt="<?= htmlspecialchars($pizza['nome'], ENT_QUOTES, 'UTF-8') ?>">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <?= htmlspecialchars($pizza['nome'], ENT_QUOTES, 'UTF-8') ?>
+                    </h5>
 
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <?= htmlspecialchars($pizza['nome'], ENT_QUOTES, 'UTF-8') ?>
-                        </h5>
+                    <p class="card-text">
+                        <?= htmlspecialchars($pizza['descricao'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                    </p>
 
-                        <p class="card-text">
-                            <?= htmlspecialchars($pizza['descricao'] ?? '', ENT_QUOTES, 'UTF-8') ?>
-                        </p>
+                    <p class="fw-bold">
+                        R$
+                        <?= number_format((float) $pizza['preco'], 2, ',', '.') ?>
+                    </p>
 
-                        <p class="fw-bold">
-                            R$ <?= number_format((float) $pizza['preco'], 2, ',', '.') ?>
-                        </p>
-
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            onclick="adicionarCarrinho(
+                    <button type="button" class="btn btn-primary" onclick="adicionarCarrinho(
                             <?= (int) $pizza['id'] ?>,
                             <?= htmlspecialchars(json_encode($pizza['nome'], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8') ?>,
                             <?= (float) $pizza['preco'] ?>
                         )">
-                            Adicionar ao carrinho
-                        </button>
-                    </div>
-
+                        Adicionar ao carrinho
+                    </button>
                 </div>
+
+            </div>
 
             <?php endwhile; ?>
 
@@ -245,28 +228,117 @@ if (!$resultado) {
     </section>
 
     <!-- Sobre a pizzaria -->
-    <section class="sobrePizzaria pt-10">
-        <h1>Sobre a Bella Pizza</h1>
-        <p>Somos uma pizzaria familiar, apaixonada por pizzas e por bons momentos. Nosso objetivo é levar até você o melhor da culinária italiana, com receitas tradicionais e ingredientes selecionados.</p>
-        <div>
-            <div>
-                <h1>ICONE</h1>
-                <p>Descrição</p>
+    <section class="sobrePizzaria pt-10" id="sobre">
+
+        <div class="container py-5 w-50 d-flex align-items-center">
+
+            <div class="row align-items-center justify-content-center g-5">
+                <div class="col-lg-5">
+                    <h1 class="text-start pb-4">Sobre a LaPizza</h1>
+                    <p class="text-justify">
+                        Somos uma pizzaria familiar, apaixonada por pizzas e por bons momentos.
+                        Nosso objetivo é levar até você o melhor da culinária italiana,
+                        com receitas tradicionais e ingredientes selecionados.
+                    </p>
+                    <div class="mt-5 pt-5 pb-5">
+                        <h3 class="text-end">Mais que uma pizza,</h2>
+                            <h1 class="text-end fontRed">uma experiência</h1>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="row justify-content-center g-4">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="text-center cardSobre h-100">
+                                <i class="bi bi-heart-fill fs-1"></i>
+                                <h3>Feito com amor</h3>
+                                <p>
+                                    Preparamos cada pizza com carinho e dedicação.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="text-center cardSobre h-100">
+                                <i class="bi bi-star-fill fs-1"></i>
+                                <h3>Qualidade</h3>
+                                <p>
+                                    Ingredientes selecionados para garantir o melhor sabor.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="text-center cardSobre h-100">
+                                <i class="bi bi-people-fill fs-1"></i>
+                                <h3>Momentos</h3>
+                                <p>
+                                    Pizza feita para compartilhar bons momentos.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <h1>ICONE</h1>
-                <p>Descrição</p>
-            </div>
-            <div>
-                <h1>ICONE</h1>
-                <p>Descrição</p>
-            </div>
-        </div>
-        <div>
-            <h2>Mais que uma pizza,</h2>
-            <h1>uma experiência</h1>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="footer text-white py-4" id="contato"> 
+        <div class="container ">
+            <div class="row d-flex flex-row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="fw-bold">
+                        Lapizza
+                    </h5>
+                    <p class="small text-light">
+                        Fazemos a melhor pizza caseira desde 1993.
+                    </p>
+                    <p class="small mb-0">
+                        Aluno gush
+                    </p>
+                </div>
+
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="fw-bold">
+                        Contato
+                    </h5>
+                    <p class="small mb-2">
+                        Lapepeniza@gmail.com
+                    </p>
+                    <p class="small">
+                        (34) 3160-6414
+                    </p>
+                </div>
+
+                <div class="col-md-3">
+                    <h5 class="fw-bold">
+                        Redes Sociais
+                    </h5>
+                    <div class="social-icons">
+                        <a href="#" aria-label="LinkedIn">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                        <a href="#" aria-label="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" aria-label="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="footer-line">
+            <p class="small mb-0">
+                © 2026 Lapizza. Todos os direitos reservados.
+            </p>
+        </div>
+        </div>
+    </footer>
 
     <?php mysqli_free_result($resultado); ?>
 
@@ -275,7 +347,7 @@ if (!$resultado) {
 
     <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous">
-    </script>
+        </script>
 
     <script src="carrinho.js"></script>
 </body>
